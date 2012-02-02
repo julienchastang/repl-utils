@@ -1,0 +1,9 @@
+# repl-utils
+
+A small utility to provide some help at the REPL.
+
+## License
+
+Copyright (C) 2012 Julien Chastang
+
+Distributed under the Eclipse Public License, the same as Clojure.
