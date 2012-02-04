@@ -9,11 +9,20 @@
   "Clear the namespace."
   (map #(ns-unmap *ns* %) (keys (ns-interns *ns*))))
 
-(defn- show-methods* [x]
-  (map #(vector (:name %)
-                (:parameter-types %) (:return-type %))  (:members (reflect x))))
+(defn- show-methods* [c]
+  (let [mds (fn[x] (map
+                   #(vector x
+                            (:name %)
+                            (:parameter-types %)
+                            (:return-type %))
+                   (:members (reflect x))))]
+    (sort-by second
+             (apply concat
+                    (map mds
+                         (conj (ancestors (class c))
+                               (class c)))))))
 
 (defn show-methods [x]
   "Will provide the Java method names of whatever was passed in."
-  (pprint
-   (sort (map str (show-methods* x)))))
+  ;; purely for side-effects so ignore return
+  (let [_ (dorun (map prn (show-methods* x)))]))
